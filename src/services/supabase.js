@@ -146,8 +146,9 @@ export async function getMatches(status = null) {
       *,
       home_team:home_team_id(id, name, short_name, logo_url, primary_color),
       away_team:away_team_id(id, name, short_name, logo_url, primary_color),
-      season:season_id(id, name, is_current)
+      season:season_id!inner(id, name, is_current)
     `)
+        .eq('season.is_current', true)
         .order('match_date', { ascending: true })
 
     if (status) {
@@ -168,8 +169,10 @@ export async function getUpcomingMatches() {
         .select(`
       *,
       home_team:home_team_id(id, name, short_name, logo_url, primary_color),
-      away_team:away_team_id(id, name, short_name, logo_url, primary_color)
+      away_team:away_team_id(id, name, short_name, logo_url, primary_color),
+      season:season_id!inner(id, name, is_current)
     `)
+        .eq('season.is_current', true)
         .eq('status', 'scheduled')
         .order('match_date', { ascending: true })
     return { data, error }
@@ -181,8 +184,10 @@ export async function getCompletedMatches() {
         .select(`
       *,
       home_team:home_team_id(id, name, short_name, logo_url, primary_color),
-      away_team:away_team_id(id, name, short_name, logo_url, primary_color)
+      away_team:away_team_id(id, name, short_name, logo_url, primary_color),
+      season:season_id!inner(id, name, is_current)
     `)
+        .eq('season.is_current', true)
         .eq('status', 'completed')
         .order('match_date', { ascending: false })
     return { data, error }

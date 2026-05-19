@@ -33,7 +33,7 @@ export default function Home() {
 
             setLiveMatches(matches.filter(m => m.status === 'live'))
             setUpcomingMatches(matches.filter(m => m.status === 'scheduled').slice(0, 3))
-            setRecentResults(matches.filter(m => m.status === 'completed').slice(0, 3))
+            setRecentResults(matches.filter(m => m.status === 'completed').sort((a, b) => new Date(b.match_date) - new Date(a.match_date)).slice(0, 3))
             setStandings((standingsRes.data || []).slice(0, 6))
         } catch (error) {
             console.error('Error fetching data:', error)
